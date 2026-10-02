@@ -1023,7 +1023,7 @@ function viewSheet() {
   else if (sh.type === 'kakao') { const L = S.kk || null;
     h += `<h4>📋 카톡 투표 명단 반영</h4>${S.ocrBusy ? `<div class="ocrbox"><div class="ocrspin"></div><b>${S.ocrMsg || '글자 읽는 중…'}</b><small>처음 한 번은 한글 인식 데이터를 받느라 조금 걸려요.</small></div>` : !L ? `<p>카톡 투표 <b>참여자 목록 화면</b>을 캡처해서 올려 주세요. 스크롤해서 여러 장이면 <b>위에서부터 순서대로</b> 모두 골라 주세요. 겹치는 이름은 한 번만 읽어요.</p>
       <label class="btn primary block" style="cursor:pointer">📷 캡처 이미지 올리기 (여러 장 가능)<input type="file" accept="image/*" multiple data-in="kkimg" hidden></label>
-      <details class="kk-alt"><summary>글자로 붙여넣기</summary><textarea id="kk-text" class="inp" rows="6" placeholder="예)\n김민혁\n이도형\n안준영"></textarea><button class="btn block" style="margin-top:8px" data-act="kakaoparse">이름 확인하기</button></details>`
+      <details class="kk-alt"><summary>글자로 붙여넣기</summary><textarea id="kk-text" class="inp" rows="6" placeholder="예)\n강시우\n고은찬\n남도현"></textarea><button class="btn block" style="margin-top:8px" data-act="kakaoparse">이름 확인하기</button></details>`
       : `<p>${L.filter(x => x.use).length}명을 이 순서대로 맨 앞에 놓아요. 이름이 맞는지 확인하고 반영을 눌러 주세요.${S.kkFromImg ? ' 카톡 화면에 보이는 순서(위→아래)대로 읽었어요. 투표 순서가 반대라면 <b>순서 뒤집기</b>를 눌러 주세요.' : ''}</p>${S.kkFromImg ? '<button class="btn sm" data-act="kakaorev" style="margin-bottom:8px">⇅ 순서 뒤집기</button>' : ''}<div class="kk-list">${L.map((x, i) => `<div class="kk-row ${x.pid ? '' : x.guess ? 'warn' : 'bad'}"><em>${i + 1}</em><span>${esc(x.raw)}</span><select class="inp" data-in="kkpick" data-i="${i}"><option value="">${x.pid || x.guess ? '건너뛰기' : '명단에 없음 · 건너뛰기'}</option>${byName(Object.keys(S.players)).map(id => `<option value="${id}" ${x.use === id ? 'selected' : ''}>${esc(pname(id))}${x.guess === id && !x.pid ? ' (혹시?)' : ''}</option>`).join('')}</select></div>`).join('')}</div>
       <div class="row" style="margin-top:10px"><button class="btn" data-act="kakaoback">← 다시 하기</button><button class="btn primary" data-act="kakaoapply">반영하기</button></div>` }` }
   else if (sh.type === 'colf') h += colFilterSheet(sh.k);
@@ -1047,7 +1047,7 @@ function viewSheet() {
     <div class="field"><label>구분<select id="ma-st" class="inp">${Object.entries(MSTAT).map(([k, n]) => `<option value="${k}">${n}</option>`).join('')}</select></label></div>
     <div class="field"><label>메모<input id="ma-memo" class="inp" type="text"></label></div></div><div class="row" style="margin-top:12px"><button class="btn primary" data-act="maddgo">추가</button></div>`;
   else if (sh.type === 'mbulk') h += `<h4>명단 붙여넣기</h4><p>한 줄에 한 명씩 "이름 생년월일" 또는 "이름 연락처" 형식으로 붙여넣으세요(예: 김환석 890331, 나강일 90). 생년월일·연락처는 없어도 되고, 게스트는 이름 뒤에 (게)를 붙여요. 이미 있는 이름은 정보만 보태요. 회원 명단에 있는 사람만 앱에 로그인할 수 있어요.</p>
-    <textarea id="mb-txt" class="inp" style="min-height:180px" placeholder="김민혁 010-1234-5678&#10;이도형 01023456789&#10;배기문(게)"></textarea><div class="row" style="margin-top:12px"><button class="btn primary" data-act="mbulkgo">등록</button></div>`;
+    <textarea id="mb-txt" class="inp" style="min-height:180px" placeholder="강시우 010-1234-5678&#10;고은찬 01023456789&#10;구하진(게)"></textarea><div class="row" style="margin-top:12px"><button class="btn primary" data-act="mbulkgo">등록</button></div>`;
   else if (sh.type === 'newsession') h += `<h4>새 경기일</h4><p>날짜와 기본 정보를 정하세요. 나중에 바꿀 수 있어요.</p><form data-form="newsession"><div class="panel">
     <div class="field"><label for="n-date">날짜</label><input id="n-date" class="inp" type="date" name="date" value="${today()}" required></div>
     <div class="field"><label for="n-time">시간</label><input id="n-time" class="inp" type="time" name="time" value="${esc(DEFAULTS.time)}"></div>
@@ -1418,12 +1418,12 @@ function genSample(existing = {}) {
         for (let i = 0; i < g; i++) { const sc = pick(tm); const as = R() < .75 ? pick(tm.filter(x => x !== sc)) : null; const sec = 15 + Math.floor(R() * 585); ev++;
           docs.push([`events/smp${sid.replace(/-/g, '')}e${String(ev).padStart(3, '0')}`, { session: sid, match: mid, team: side, scorer: pid[sc], assist: as ? pid[as] : null, og: false, sec, half: sec < 300 ? 'h1' : 'h2', at: Date.now() + ev, sample: true }]) } } });
   };
-  past(dstr(d0), [['김민혁', '종현', '이준현', '강인호', '이호열', '이건'], ['이태명', '이도형', '김바우', '양성필', '지유균', '오태훈'], ['박종현', '안준영', '한준호', '윤창민', '김민준', '손준민']], ['RED', 'BLACK', 'YELLOW'], ['종현', '김바우', '박종현'],
+  past(dstr(d0), [['강시우', '차민혁', '서하람', '안재윤', '정다온', '조은결'], ['이로운', '고은찬', '송민재', '오지호', '장하준', '최현우'], ['신유찬', '남도현', '류지환', '문태오', '임도윤', '전우진']], ['RED', 'BLACK', 'YELLOW'], ['차민혁', '송민재', '신유찬'],
     [[2, 1], [1, 1], [3, 2], [0, 2], [2, 2], [1, 3], [2, 0], [3, 1], [1, 2]]);
-  past(dstr(d1), [['김민혁', '이도형', '안준영', '한준호', '윤창민', '이정욱'], ['이준현', '김바우', '박종현', '강인호', '양성필', '손효석'], ['이태명', '김민준', '지유균', '손준민', '이호열', '이건']], ['BLUE', 'BLACK', 'WHITE'], ['이정욱', '박종현', '지유균'],
+  past(dstr(d1), [['강시우', '고은찬', '남도현', '류지환', '문태오', '배준서'], ['서하람', '송민재', '신유찬', '안재윤', '오지호', '윤서진'], ['이로운', '임도윤', '장하준', '전우진', '정다온', '조은결']], ['BLUE', 'BLACK', 'WHITE'], ['배준서', '신유찬', '장하준'],
     [[1, 2], [2, 1], [2, 2], [0, 1], [3, 1], [2, 3], [1, 1], [2, 0], [1, 2]]);
   const nid = dstr(dn);
-  docs.push(['sessions/' + nid, base(nid, { stage: 'apply', draftStatus: 'ready', applicants: ['종현', '김민혁', '이도형', '안준영', '이준현', '김바우', '박종현', '강인호', '이태명', '김민준', '지유균', '손준민', '오태훈', '장영범'].map(n => pid[n]),
+  docs.push(['sessions/' + nid, base(nid, { stage: 'apply', draftStatus: 'ready', applicants: ['차민혁', '강시우', '고은찬', '남도현', '서하람', '송민재', '신유찬', '안재윤', '이로운', '임도윤', '장하준', '전우진', '최현우', '한결'].map(n => pid[n]),
     captains: { A: null, B: null, C: null }, teams: { A: { players: [] }, B: { players: [] }, C: { players: [] } } })]);
   return docs;
 }
@@ -1782,26 +1782,26 @@ function parseRecord(txt) {
 }
 function importTemplate() {
   return `[경기운영] 없음
-[경기장 예약자] 김바우
+[경기장 예약자] 송민재
 
 [1순위]
-손효석 이도형 김민혁 손준민 안준영 이호열
-박종현 지유균
+윤서진 고은찬 강시우 전우진 남도현 정다온
+신유찬 장하준
 
 [2순위 참확정]
-김민준 강인호 한준호 윤창민 이준현 양성필
-이정욱 이태명 이건
+임도윤 안재윤 류지환 문태오 서하람 오지호
+배준서 이로운 조은결
 
 [대기]
-도현우 고광원 권순업 문태웅
+남궁현 석지안 우태경 봉시후
 
 [마감취소]
-김동준
+편은호
 
 [팀] (맨 앞 이름이 주장)
-파 BLUE: 김민혁 이도형 안준영 한준호 윤창민 이정욱
-검 BLACK: 이준현 김바우 박종현 강인호 양성필 손효석
-흰 WHITE: 이태명 김민준 지유균 손준민 이호열 이건
+파 BLUE: 강시우 고은찬 남도현 류지환 문태오 배준서
+검 BLACK: 서하람 송민재 신유찬 안재윤 오지호 윤서진
+흰 WHITE: 이로운 임도윤 장하준 전우진 정다온 조은결
 
 [경기결과]
 흰 0 0 검
@@ -1862,7 +1862,7 @@ function loginFields(prefix, name) {
 async function loginFlow(name, pin, remember) {
   name = (name || '').replace(/\(\s*게\s*\)/g, '').trim().slice(0, 20); pin = (pin || '').trim();
   if (!name) { toast('이름을 입력해 주세요.'); return null } if (!/^\d{4}$/.test(pin)) { toast('비밀번호는 숫자 4자리로 입력해 주세요.'); return null }
-  const pid = findPlayer(name);
+  let pid = findPlayer(name); if (!pid) { try { pid = await S.store.add('players', { name, guest: false, status: 'active', createdAt: Date.now() }); S.players[pid] = { name, guest: false, status: 'active' }; toast(`체험판이라 ${name} 님을 새 회원으로 등록했어요.`) } catch (e) { console.error(e) } }
   if (!pid) { const msg = '회원 목록에 포함되어 있지 않습니다. 다시 확인해보세요.'; toast(msg); document.querySelectorAll('.lgerr').forEach(e => { e.textContent = `"${name}" — ${msg}`; e.hidden = false }); return null }
   const h = await pinHash(pid, pin); let a = null; try { a = await S.store.get('auth/' + pid) } catch { }
   if (!a || !a.h) { if (!confirm(`${name} 님의 비밀번호를 ${pin.replace(/./g, '•')}(으)로 등록할까요? 다른 기기에서도 이 번호로 로그인해요.`)) return null;
@@ -2740,5 +2740,29 @@ function swipeTab(dir) {
 <div class="row2"><button class="rs" type="button" onclick="WFDEMO.reset()">처음 상태로 되돌리기</button><button class="go" type="button" onclick="WFDEMO.close()">시작하기</button></div>
 </div></div>
 <script>if(!sessionStorage.getItem('seen'))document.getElementById('demo-info').hidden=false;</script>
+<script>
+/* 체험판 데이터 채우기: 앱이 샘플을 넣은 뒤 회원을 늘리고, 다음 경기 신청자·주차·공당·물당을 무작위로 채워요 (한 번만) */
+(()=>{ const EXTRA='권도하 김태윤 노승민 도윤재 마준혁 박서준 백지훈 변우성 성지후 신동하 엄태환 여준호 원재희 유하늘 육선우 이서후 장민규 정우빈 주세윤 진하율 채도윤 탁현서 하준영 허지민 홍시원'.split(' ');
+  let tries=0; const go=async()=>{ tries++; let D; try{D=JSON.parse(localStorage.getItem('mockdb')||'{}')}catch{D={}}
+    if(D['meta/demo']) return; if(!D['meta/app']||!Object.keys(D).some(k=>k.startsWith('sessions/'))){ if(tries<60) setTimeout(go,500); return }
+    const db=await window.claude.use('db'); let seed=20261002; const R=()=>{seed=(seed*1103515245+12345)%2147483648;return seed/2147483648};
+    const pids=Object.keys(D).filter(k=>k.startsWith('players/')).map(k=>k.slice(8)); const names=new Set(pids.map(p=>D['players/'+p].name));
+    for(let i=0;i<EXTRA.length;i++){ const n=EXTRA[i]; if(names.has(n)) continue; const id='dm'+String(i+1).padStart(2,'0');
+      await db.doc('players/'+id).set({name:n,guest:false,status:i%11===10?'dormant':'active',createdAt:Date.now()-864e5*(40-i)});
+      await db.doc('contacts/'+id).set({phone:`010-${String(2000+i*37).slice(0,4)}-${String(5000+i*113).slice(-4)}`,birth:`${1985+Math.floor(R()*15)}${String(1+Math.floor(R()*12)).padStart(2,'0')}${String(1+Math.floor(R()*28)).padStart(2,'0')}`,memo:''}); pids.push(id) }
+    // 기존 회원 연락처·생년월일도 채우기
+    for(const p of pids){ const c=D['contacts/'+p]||{}; if(!c.birth) await db.doc('contacts/'+p).set({...c,birth:`${1985+Math.floor(R()*15)}${String(1+Math.floor(R()*12)).padStart(2,'0')}${String(1+Math.floor(R()*28)).padStart(2,'0')}`}) }
+    // 다음 경기(신청 중) 신청자 채우기
+    const today=new Date().toISOString().slice(0,10); const sid=Object.keys(D).filter(k=>k.startsWith('sessions/')&&k.split('/').length===2&&k.slice(9)>=today).sort()[0];
+    if(sid){ const s=D[sid]; const cur=Array.isArray(s.apps)?s.apps.map(a=>a.pid):[...(s.applicants||[]),...(s.waitlist||[])]; const pool=pids.filter(p=>!cur.includes(p)&&(D['players/'+p]?.status||'active')!=='dormant');
+      for(let i=pool.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+      const add=pool.slice(0,Math.max(0,(s.capacity||18)+4-cur.length)); const t0=new Date(s.applyOpen||Date.now()).getTime()+30000;
+      const apps=[...cur,...add].map((pid,i)=>({k:'dm'+i,pid,uid:'demo',at:t0+i*(20000+Math.floor(R()*90000))}));
+      const all=apps.map(a=>a.pid); const pickN=(n)=>{const c=[...all];const o=[];while(o.length<n&&c.length)o.push(c.splice(Math.floor(R()*Math.min(c.length,14)),1)[0]);return o};
+      const ball=pickN(2), drink=pickN(2), park=pickN(3); const cars=['12가3456','34나5678','56다7890','78라1234'];
+      await db.doc(sid).set({...s,apps,applicants:null,waitlist:null,dutyReq:{ball:Object.fromEntries(ball.map((p,i)=>[p,t0+i])),drink:Object.fromEntries(drink.map((p,i)=>[p,t0+i]))},park:Object.fromEntries(park.map((p,i)=>[p,{car:cars[i],at:t0+i}]))}) }
+    await db.doc('meta/demo').set({at:Date.now()}) };
+  setTimeout(go,1500) })();
+</script>
 </body>
 </html>
